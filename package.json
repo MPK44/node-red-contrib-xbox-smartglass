@@ -1,0 +1,57 @@
+{
+  "_from": "node-red-contrib-xbox-smartglass",
+  "_id": "node-red-contrib-xbox-smartglass@0.0.2",
+  "_inBundle": false,
+  "_integrity": "sha512-qDBiZ/q4Pc00eaBRrAj4/jUI7LyuVQfkrPQa+LywFc+kgxum/2ZxY36hwFUiWIMXm7lmvyAzl4XPb/oJEsYR9g==",
+  "_location": "/node-red-contrib-xbox-smartglass",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "node-red-contrib-xbox-smartglass",
+    "name": "node-red-contrib-xbox-smartglass",
+    "escapedName": "node-red-contrib-xbox-smartglass",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-red-contrib-xbox-smartglass/-/node-red-contrib-xbox-smartglass-0.0.2.tgz",
+  "_shasum": "d2490129d91a58f34c4097062624b2dd7e5f26fc",
+  "_spec": "node-red-contrib-xbox-smartglass",
+  "_where": "/home/pi/.node-red",
+  "author": {
+    "name": "MPK44"
+  },
+  "bugs": {
+    "url": "https://github.com/MPK44/node-red-contrib-xbox-smartglass/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "xbox-smartglass-core-node": "^0.6.7"
+  },
+  "deprecated": false,
+  "description": "controll your xbox via smartglass protocol in Node-RED Project",
+  "homepage": "https://github.com/MPK44/node-red-contrib-xbox-smartglass#readme",
+  "keywords": [
+    "node-red",
+    "XBOX",
+    "controller",
+    "smartglass"
+  ],
+  "license": "MIT",
+  "name": "node-red-contrib-xbox-smartglass",
+  "node-red": {
+    "nodes": {
+      "xbox-controller": "nodes/xbox-controller.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MPK44/node-red-contrib-xbox-smartglass.git"
+  },
+  "version": "0.0.3"
+}

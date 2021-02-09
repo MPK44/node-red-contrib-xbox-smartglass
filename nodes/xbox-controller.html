@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Xbox-controller',{
+        category: 'Xbox',
+        color: '#0e7a0d',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "xbox.png",
+        label: function() {
+            return this.name||"Xbox-controller";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Xbox-controller">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="Xbox-controller">
+    <p>Uses Sunglass protocoll to send controller input to Xbox on the Network.</p>
+
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>Input to be send to Xbox. Possible values are: a, b, x, y, nexus, up, left, right, down, view, menu</dd>
+    </dl>
+	
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>msg</dt>
+        <dd>returns the original message when send was successful</dd>
+    </dl>
+
+    <h3>Details</h3>
+    <p>Requires <i>Settings-> Connections-> Remote-features-> Xbox app</i> to be set to <i>allow all devices</i>.</p>
+    <p>Brodcasts so it may fail with multiple Xbox in a network.</p>
+
+</script>
