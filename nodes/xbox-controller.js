@@ -44,16 +44,14 @@ module.exports = function (RED) {
         });
       } else if (msg.payload == 'on') {
         if (ip == null) {
-
           node.error("Can't use Broadcast for turning on");
           node.status({})
           return
         }
-        var options = {
+        sgClient.powerOn({
           'ip': ip,
           'live_id': node.liveID
-        };
-        sgClient.powerOn(options).then(function () {
+        }).then(function () {
           node.send(msg);
           node.status({})
         }, function (error) {
