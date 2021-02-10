@@ -34,7 +34,7 @@
     "xbox-smartglass-core-node": "^0.6.7"
   },
   "deprecated": false,
-  "description": "controll your xbox via smartglass protocol in Node-RED Project",
+  "description": "Node-RED node to controll your local Xbox via smartglass protocol",
   "homepage": "https://github.com/MPK44/node-red-contrib-xbox-smartglass#readme",
   "keywords": [
     "node-red",
@@ -53,5 +53,5 @@
     "type": "git",
     "url": "git+https://github.com/MPK44/node-red-contrib-xbox-smartglass.git"
   },
-  "version": "0.0.3"
+  "version": "0.0.4"
 }
