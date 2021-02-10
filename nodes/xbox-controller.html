@@ -1,23 +1,85 @@
 <script type="text/javascript">
-    RED.nodes.registerType('Xbox-controller',{
-        category: 'Xbox',
-        color: '#0e7a0d',
-        defaults: {
-            name: {value:""}
-        },
-        inputs:1,
-        outputs:1,
-        icon: "xbox.png",
-        label: function() {
-            return this.name||"Xbox-controller";
+  RED.nodes.registerType('Xbox-controller', {
+    category: 'Xbox',
+    color: '#0e7a0d',
+    defaults: {
+      name: {
+        value: ""
+      },
+      iptype: {
+        value: "bc"
+      },
+      ip: {
+        validate: function(txt){
+			if($('#node-input-iptype').val() == "fix" && !/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(txt)){
+				return false;
+			}else{
+				return true;
+			}
+		}
+      },
+      liveID: {
+        validate: function (txt){
+			if($('#node-input-iptype').val() == "fix" && !(txt=="" || /^[A-Z0-9]{16}$/.test(txt))){
+				return false;
+			}else{
+				return true;
+			}
+		}
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "xbox.png",
+    label: function () {
+      return this.name || "Xbox-controller";
+    },
+    oneditprepare: function () {
+      function manageInput() {
+        if ($('#node-input-iptype').val() == "fix") {
+          $('#row_ip').show();
+          $('#row_liveid').show();
+          $('#row_text_fix').show();
+          $('#row_text_broadcast').hide();
+        } else {
+          $('#row_ip').hide();
+          $('#row_liveid').hide();
+          $('#row_text_fix').hide();
+          $('#row_text_broadcast').show();
         }
-    });
+      }
+	  
+      $('#node-input-iptype').change(manageInput);
+    }
+  });
 </script>
 
 <script type="text/x-red" data-template-name="Xbox-controller">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-iptype"><i class="fa fa-tag"></i> Identify Xbox</label>
+        <select id="node-input-iptype" >
+            <option value = "bc">Broadcast</option>
+            <option value = "fix">fixed values</option>
+         </select>
+    </div>
+    <div class="form-row" id="row_ip">
+        <label for="node-input-ip"><i class="fa fa-tag"></i> IP</label>
+        <input type="text" id="node-input-ip" placeholder="">
+    </div>
+    <div class="form-row" id="row_liveid">
+        <label for="node-input-liveID"><i class="fa fa-tag"></i> liveID</label>
+        <input type="text" id="node-input-liveID" placeholder="">
+    </div>
+    <div class="form-tips" id="row_text_broadcast">
+        Turning on the Xbox is not possible via Broadcast
+    </div>
+    <div class="form-tips" id="row_text_fix">
+        For most actions you only need to supply the IP.</br>
+        For turning on the Xbox you also need to set a Live-ID. This can be found on the Xbox under Settings-System-Device-XboxLiveID. Turning on only works with Speedstart enabeled.
     </div>
 </script>
 
