@@ -4,16 +4,16 @@ module.exports = function (RED) {
 
   function XboxControllerNode(config) {
     RED.nodes.createNode(this, config);
-    var node = this;
+    let node = this;
     let sgClient = Sunglass();
-    var ip = (node.iptype == "fix" ? node.ip : null);
+    let ip = (config.iptype == "fix" ? config.ip : null);
 
     function connect() {
       return new Promise(function (myResolve, myReject) {
         if (sgClient.isConnected()) {
           myResolve();
         } else {
-          sgClient.connect(null).then(function () {
+          sgClient.connect(ip).then(function () {
             sgClient.addManager('system_input', SystemInputChannel());
             setTimeout(myResolve, 1000);
           }, function (error) {
