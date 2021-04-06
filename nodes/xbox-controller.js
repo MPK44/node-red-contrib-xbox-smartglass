@@ -50,7 +50,7 @@ module.exports = function (RED) {
         }
         sgClient.powerOn({
           'ip': ip,
-          'live_id': node.liveID
+          'live_id': config.liveID
         }).then(function () {
           node.send(msg);
           node.status({})

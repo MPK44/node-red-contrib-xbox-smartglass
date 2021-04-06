@@ -13,4 +13,4 @@ On success the original msg is send to the output. Only exception is getActiveAp
 On failure an error is thrown and no msg is output.
 
 ## License
-[MIT](https://opensource.org/licenses/MIT
+[MIT](https://opensource.org/licenses/MIT)
