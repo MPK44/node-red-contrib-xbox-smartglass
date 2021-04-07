@@ -1,28 +1,4 @@
 {
-  "_from": "node-red-contrib-xbox-smartglass",
-  "_id": "node-red-contrib-xbox-smartglass@0.0.2",
-  "_inBundle": false,
-  "_integrity": "sha512-qDBiZ/q4Pc00eaBRrAj4/jUI7LyuVQfkrPQa+LywFc+kgxum/2ZxY36hwFUiWIMXm7lmvyAzl4XPb/oJEsYR9g==",
-  "_location": "/node-red-contrib-xbox-smartglass",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "node-red-contrib-xbox-smartglass",
-    "name": "node-red-contrib-xbox-smartglass",
-    "escapedName": "node-red-contrib-xbox-smartglass",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/node-red-contrib-xbox-smartglass/-/node-red-contrib-xbox-smartglass-0.0.2.tgz",
-  "_shasum": "d2490129d91a58f34c4097062624b2dd7e5f26fc",
-  "_spec": "node-red-contrib-xbox-smartglass",
-  "_where": "/home/pi/.node-red",
   "author": {
     "name": "MPK44"
   },
@@ -53,5 +29,5 @@
     "type": "git",
     "url": "git+https://github.com/MPK44/node-red-contrib-xbox-smartglass.git"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

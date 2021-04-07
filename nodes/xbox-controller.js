@@ -50,7 +50,8 @@ module.exports = function (RED) {
         }
         sgClient.powerOn({
           'ip': ip,
-          'live_id': config.liveID
+          'live_id': config.liveID,
+          'tries': 10
         }).then(function () {
           node.send(msg);
           node.status({})
@@ -71,9 +72,11 @@ module.exports = function (RED) {
           node.error(error);
           node.status({})
         });
-      } else if (msg.payload == "getActiveApp") {
+      } else if (msg.payload == "getActiveApp" || msg.payload == "getBoxInfo") {
         connect().then(function () {
           msg.app = sgClient.getActiveApp();
+          msg.liveID = sgClient._console.getLiveid();
+          msg.ip = sgClient._console.getIp();
           node.send(msg);
           node.status({})
         }, function (error) {
