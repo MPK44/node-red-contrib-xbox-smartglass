@@ -1,7 +1,33 @@
 module.exports = function (RED) {
   let Sunglass = require('xbox-smartglass-core-node/src/smartglass');
   let SystemInputChannel = require('xbox-smartglass-core-node/src/channels/systeminput');
-
+  
+	RED.httpAdmin.get('/node-red-contrib-xbox-smartglass/liveID', function(req, res, next) {
+		let ip = req.query.ip;
+		let liveId = "";
+		let sgClient = Sunglass()
+    sgClient.connect(ip).then(function () {
+        liveId = sgClient._console.getLiveid();
+        sgClient.disconnect();
+        res.end(JSON.stringify(liveId));
+    }, function (error) {
+        res.end(JSON.stringify(""));
+    });
+	});
+	
+	RED.httpAdmin.get('/node-red-contrib-xbox-smartglass/discover', function(req, res, next) {
+		let boxes = [];
+		let sgClient = Sunglass()
+    sgClient.discovery().then(function (data) {
+        data.forEach(box => {
+          boxes.push(box.remote.address)
+        })
+        res.end(JSON.stringify(boxes));
+    }, function (error) {
+        res.end(JSON.stringify([]));
+    });
+	});
+	
   function XboxControllerNode(config) {
     RED.nodes.createNode(this, config);
     let node = this;

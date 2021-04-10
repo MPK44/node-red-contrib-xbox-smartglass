@@ -1,3 +1,4 @@
+{
 <script type="text/javascript">
   RED.nodes.registerType('Xbox-controller', {
     category: 'Xbox',
@@ -11,21 +12,21 @@
       },
       ip: {
         validate: function(txt){
-			if($('#node-input-iptype').val() == "fix" && !/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(txt)){
-				return false;
-			}else{
-				return true;
-			}
-		}
+          if($('#node-input-iptype').val() == "fix" && !/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(txt)){
+            return false;
+          }else{
+            return true;
+          }
+        }
       },
       liveID: {
         validate: function (txt){
-			if($('#node-input-iptype').val() == "fix" && !(txt=="" || /^[A-Z0-9]{16}$/.test(txt))){
-				return false;
-			}else{
-				return true;
-			}
-		}
+          if($('#node-input-iptype').val() == "fix" && !(txt=="" || /^[A-Z0-9]{16}$/.test(txt))){
+            return false;
+          }else{
+            return true;
+          }
+        }
       }
     },
     inputs: 1,
@@ -35,6 +36,54 @@
       return this.name || "Xbox-controller";
     },
     oneditprepare: function () {
+      $('#node-input-scandLiveId').click(lookupLiveId);
+      $('#node-input-discover').click(discoverIp);
+
+      function lookupLiveId(){
+        let ip = $('#node-input-ip').val();
+        RED.notify("Looking for LiveId", "info");
+          $.get('node-red-contrib-xbox-smartglass/liveID', {
+              ip: ip
+            })
+            .done(function (data) {
+              let liveId = JSON.parse(data);
+              if(liveId == ""){
+                RED.notify("Couldn't connect to XBOX. Ensure XBOX is on and reachable unter "+ip, "error");
+              }else{
+                RED.notify("Found LiveId "+liveId, "success");
+                $('#node-input-liveID').val(liveId);
+              }
+            })
+            .fail(function () {
+              RED.notify("Something went wrong. Please try again later.", "error");
+            })
+      }
+
+      function discoverIp(){
+        RED.notify("Searching for XBOX", "info");
+          $.get('node-red-contrib-xbox-smartglass/discover')
+            .done(function (data) {
+              let boxes = JSON.parse(data);
+              if(boxes == []){
+                RED.notify("No XBOX found. Ensure the XBOX is on and reachable.", "error");
+              }else{
+                let options = boxes.map(ip => '<option value="'+ip+'">');
+                $('#ips').empty()
+                $('#ips').append(options);
+                if(boxes.length==1){
+                  RED.notify("Found "+boxes.length+" XBOX", "success");
+                  $('#node-input-ip').val(boxes[0]);
+                }else{
+                  RED.notify("Found "+boxes.length+" XBOX. Use arrowkeys to show autocomplete", "success");
+                  $('#node-input-ip').val("");
+                }
+              }
+            })
+            .fail(function () {
+              RED.notify("Something went wrong. Please try again later.", "error");
+            })
+      }
+
       function manageInput() {
         if ($('#node-input-iptype').val() == "fix") {
           $('#row_ip').show();
@@ -68,18 +117,24 @@
     </div>
     <div class="form-row" id="row_ip">
         <label for="node-input-ip"><i class="fa fa-tag"></i> IP</label>
-        <input type="text" id="node-input-ip" placeholder="">
+        <input type="text" list="ips" id="node-input-ip" placeholder="" style="width: 250px;">
+        <datalist id="ips">
+        </datalist>
+        <button type="button" id="node-input-discover" class="red-ui-button"><i class="fa fa-search"></i></button>
     </div>
     <div class="form-row" id="row_liveid">
         <label for="node-input-liveID"><i class="fa fa-tag"></i> liveID</label>
-        <input type="text" id="node-input-liveID" placeholder="">
+        <input type="text" id="node-input-liveID" placeholder="" style="width: 250px;">
+        <button type="button" id="node-input-scandLiveId" class="red-ui-button"><i class="fa fa-search"></i></button>
     </div>
     <div class="form-tips" id="row_text_broadcast">
-        Turning on the Xbox is not possible via Broadcast
+        Turning on the Xbox is not possible via Broadcast.</br>
+        If you have muliple Xbox on your network, you should use fixed IP.
     </div>
     <div class="form-tips" id="row_text_fix">
         For most actions you only need to supply the IP.</br>
-        For turning on the Xbox you also need to set a Live-ID. This can be found on the Xbox under Settings-System-Device-XboxLiveID or via msg.payload="getBoxInfo". Turning on only works with Speedstart enabeled.
+        For turning on the Xbox you also need to set a Live-ID.</br>
+        Turning on only works with Speedstart enabeled.
     </div>
 </script>
 
@@ -92,24 +147,21 @@
             <span class="property-type">string</span>
         </dt>
         <dd>Input to be send to Xbox.</dd>
-        <dd>Possible Controllerbuttons: a, b, x, y, nexus, up, left, right, down, view, menu</dd>
-        <dd>Possible commands are: on, off, getBoxInfo</dd>
+        <dd>Possible controllerbuttons: a, b, x, y, nexus, up, left, right, down, view, menu</dd>
+        <dd>Possible commands are: on, off, getActiveApp</dd>
     </dl>
 	
     <h3>Output</h3>
     <dl class="message-properties">
         <dt>msg</dt>
         <dd>returns the original message when send was successful</dd>
-        <dt>msg.payload.app</dt>
-        <dd>when getBoxInfo: id of currently active app</dd>
-        <dt>msg.payload.liveID</dt>
-        <dd>when getBoxInfo: LiveID of the box</dd>
-        <dt>msg.payload.ip</dt>
-        <dd>when getBoxInfo: IP-Adress of the box</dd>
+        <dt>msg.app (only for "getActiveApp")</dt>
+        <dd>id of currently active app</dd>
     </dl>
 
     <h3>Details</h3>
     <p>Requires <i>Settings-> Connections-> Remote-features-> Xbox app</i> to be set to <i>allow all devices</i>.</p>
-    <p>Brodcasts so it may fail with multiple Xbox in a network.</p>
 
 </script>
+
+  }
