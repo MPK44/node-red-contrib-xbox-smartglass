@@ -65,7 +65,7 @@ module.exports = function (RED) {
             node.status({})
           });
         }, function (error) {
-          node.error(error, '');
+          node.error("Failed to connect", error);
           node.status({})
         });
       } else if (msg.payload == 'on') {
@@ -95,7 +95,7 @@ module.exports = function (RED) {
             node.status({})
           });
         }, function (error) {
-          node.error(error, '');
+          node.error("Failed to connect", error);
           node.status({})
         });
       } else if (msg.payload == "getActiveApp" || msg.payload == "getBoxInfo") {
@@ -106,7 +106,7 @@ module.exports = function (RED) {
           node.send(msg);
           node.status({})
         }, function (error) {
-          node.error(error, '');
+          node.error("Failed to connect", error);
           node.status({})
         });
       } else {
