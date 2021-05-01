@@ -61,16 +61,16 @@ module.exports = function (RED) {
             node.send(msg);
             node.status({})
           }, function (error) {
-            node.error(error);
+            node.error(error, msg);
             node.status({})
           });
         }, function (error) {
-          node.error("Failed to connect", error);
+          node.error(error, msg);
           node.status({})
         });
       } else if (msg.payload == 'on') {
         if (ip == null) {
-          node.error("Can't use Broadcast for turning on");
+          node.error("Can't use Broadcast for turning on", msg);
           node.status({})
           return
         }
@@ -82,7 +82,7 @@ module.exports = function (RED) {
           node.send(msg);
           node.status({})
         }, function (error) {
-          node.error(error.error);
+          node.error(error.error, msg);
           node.status({})
         });
       } else if (msg.payload == 'off') {
@@ -91,11 +91,11 @@ module.exports = function (RED) {
             node.send(msg);
             node.status({})
           }, function (error) {
-            node.error(error);
+            node.error(error, msg);
             node.status({})
           });
         }, function (error) {
-          node.error("Failed to connect", error);
+          node.error(error, msg);
           node.status({})
         });
       } else if (msg.payload == "getActiveApp" || msg.payload == "getBoxInfo") {
@@ -106,11 +106,11 @@ module.exports = function (RED) {
           node.send(msg);
           node.status({})
         }, function (error) {
-          node.error("Failed to connect", error);
+          node.error(error, msg);
           node.status({})
         });
       } else {
-        node.error("Unsupported input: " + msg.payload);
+        node.error("Unsupported input: " + msg.payload, msg);
         node.status({})
       };
     });
